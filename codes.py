@@ -134,40 +134,30 @@ elif(option=='Delete'):
 else:
     sub_option = st.selectbox('Select the data need to displayed',('Employee','Branch','Supplier','Client','Works_With'))
     if(sub_option=='Employee'):
-         postgreconnect.runquery('SELECT * FROM EMPLOYEE    ')
-         record = cur.fetchall()
-         emp_data=pd.DataFrame(record)
+         emp_data=pd.DataFrame(postgreconnect.runquery('SELECT * FROM EMPLOYEE'))
          emp_data.columns=['ID','First_Name','Last_name','Sex','Salary','Sup_id','Branch_id']
          st.subheader('Current Employee Details')
          html()
      
     elif(sub_option=='Branch'):
-         postgreconnect.runquery('SELECT * FROM BRANCH    ')
-         record = cur.fetchall()
-         emp_data=pd.DataFrame(record)
+         emp_data=pd.DataFrame(postgreconnect.runquery('SELECT * FROM BRANCH    '))
          emp_data.columns=['branch_id','branch_name','mgr_id','mgr_start_date']
          st.subheader('Current Branch Details')
          html()
         
     elif(sub_option=='Client'):
-         postgreconnect.runquery('SELECT * FROM CLIENT    ')
-         record = cur.fetchall()
-         emp_data=pd.DataFrame(record)
+         emp_data=pd.DataFrame(postgreconnect.runquery('SELECT * FROM CLIENT    '))
          emp_data.columns=['client_id','client_name','branch_id']
          st.subheader('Current Client Details')
          html()
          
     elif(sub_option=='Supplier'):
-         postgreconnect.runquery('SELECT * FROM BRANCH_SUPPLIER    ')
-         record = cur.fetchall()
-         emp_data=pd.DataFrame(record)
+         emp_data=pd.DataFrame(postgreconnect.runquery('SELECT * FROM BRANCH_SUPPLIER    '))
          emp_data.columns=['branch_id','supplier_name','supplier_type']
          st.subheader('Current Supplier Details')
          html()
     elif(sub_option=='Works_With'):
-         postgreconnect.runquery('SELECT * FROM works_with    ')
-         record = cur.fetchall()
-         emp_data=pd.DataFrame(record)
+         emp_data=pd.DataFrame(postgreconnect.runquery('SELECT * FROM works_with    '))
          emp_data.columns=['emp_id','client_id','total_sales']
          st.subheader('Current Client & Employee Details')
          html()
