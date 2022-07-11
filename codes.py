@@ -22,6 +22,12 @@ def ins_value():
      for record in insert_values:
            postgreconnect.runquery(insert_script, record)
      st.write("Added Successfully")
+def html():
+        hide_table_row_index = """
+                    <style>
+                         tbody th {display:none}
+                         .blank {display:none}
+                    </style> """
 
 if(option=='Reset'):
                     if st.button('Click to Reset'):
@@ -126,79 +132,57 @@ elif(option=='Delete'):
                  # Deleting records
                        
 else:
-                     sub_option = st.selectbox('Select the data need to displayed',('Employee','Branch','Supplier','Client','Works_With'))
-                     if(sub_option=='Employee'):
-                          postgreconnect.runquery('SELECT * FROM EMPLOYEE    ')
-                          record = cur.fetchall()
-                          emp_data=pd.DataFrame(record)
-                          emp_data.columns=['ID','First_Name','Last_name','Sex','Salary','Sup_id','Branch_id']
-                          st.subheader('Current Employee Details')
-                          hide_table_row_index = """
-                                 <style>
-                                      tbody th {display:none}
-                                      .blank {display:none}
-                                 </style> """
-                      
-                     elif(sub_option=='Branch'):
-                          postgreconnect.runquery('SELECT * FROM BRANCH    ')
-                          record = cur.fetchall()
-                          emp_data=pd.DataFrame(record)
-                          emp_data.columns=['branch_id','branch_name','mgr_id','mgr_start_date']
-                          st.subheader('Current Branch Details')
-                          hide_table_row_index = """
-                                 <style>
-                                      tbody th {display:none}
-                                      .blank {display:none}
-                                 </style> """
-                         
-                     elif(sub_option=='Client'):
-                          postgreconnect.runquery('SELECT * FROM CLIENT    ')
-                          record = cur.fetchall()
-                          emp_data=pd.DataFrame(record)
-                          emp_data.columns=['client_id','client_name','branch_id']
-                          st.subheader('Current Client Details')
-                          hide_table_row_index = """
-                                 <style>
-                                      tbody th {display:none}
-                                      .blank {display:none}
-                                 </style> """
-                          
-                          
-                         
-                     elif(sub_option=='Supplier'):
-                          postgreconnect.runquery('SELECT * FROM BRANCH_SUPPLIER    ')
-                          record = cur.fetchall()
-                          emp_data=pd.DataFrame(record)
-                          emp_data.columns=['branch_id','supplier_name','supplier_type']
-                          st.subheader('Current Supplier Details')
-                          hide_table_row_index = """
-                                 <style>
-                                      tbody th {display:none}
-                                      .blank {display:none}
-                                 </style> """
-                     elif(sub_option=='Works_With'):
-                          postgreconnect.runquery('SELECT * FROM works_with    ')
-                          record = cur.fetchall()
-                          emp_data=pd.DataFrame(record)
-                          emp_data.columns=['emp_id','client_id','total_sales']
-                          st.subheader('Current Client & Employee Details')
-                          hide_table_row_index = """
-                                 <style>
-                                      tbody th {display:none}
-                                      .blank {display:none}
-                                 </style> """
-                         
-                     st.markdown(hide_table_row_index, unsafe_allow_html=True)
-                     st.table(emp_data)
-                     st.write("If there is no data, display will be empty")
-                     chart1=alt.Chart(emp_data).mark_bar().encode(                             
-                              alt.X('emp_id', title='Employ ID'),
-                              alt.Y('total_sales', title='Sales in Rs')
-                              )
-                     st.altair_chart(chart1,use_container_width=True)
-                             
-                     chart2=alt.Chart(emp_data).mark_bar().encode(                             
-                              alt.X('client_id', title='Client ID'),
-                              alt.Y('total_sales', title='Sales in Rs')
-                              )
-                     st.altair_chart(chart2,use_container_width=True)       
+    sub_option = st.selectbox('Select the data need to displayed',('Employee','Branch','Supplier','Client','Works_With'))
+    if(sub_option=='Employee'):
+         postgreconnect.runquery('SELECT * FROM EMPLOYEE    ')
+         record = cur.fetchall()
+         emp_data=pd.DataFrame(record)
+         emp_data.columns=['ID','First_Name','Last_name','Sex','Salary','Sup_id','Branch_id']
+         st.subheader('Current Employee Details')
+         html()
+     
+    elif(sub_option=='Branch'):
+         postgreconnect.runquery('SELECT * FROM BRANCH    ')
+         record = cur.fetchall()
+         emp_data=pd.DataFrame(record)
+         emp_data.columns=['branch_id','branch_name','mgr_id','mgr_start_date']
+         st.subheader('Current Branch Details')
+         html()
+        
+    elif(sub_option=='Client'):
+         postgreconnect.runquery('SELECT * FROM CLIENT    ')
+         record = cur.fetchall()
+         emp_data=pd.DataFrame(record)
+         emp_data.columns=['client_id','client_name','branch_id']
+         st.subheader('Current Client Details')
+         html()
+         
+    elif(sub_option=='Supplier'):
+         postgreconnect.runquery('SELECT * FROM BRANCH_SUPPLIER    ')
+         record = cur.fetchall()
+         emp_data=pd.DataFrame(record)
+         emp_data.columns=['branch_id','supplier_name','supplier_type']
+         st.subheader('Current Supplier Details')
+         html()
+    elif(sub_option=='Works_With'):
+         postgreconnect.runquery('SELECT * FROM works_with    ')
+         record = cur.fetchall()
+         emp_data=pd.DataFrame(record)
+         emp_data.columns=['emp_id','client_id','total_sales']
+         st.subheader('Current Client & Employee Details')
+         html()
+        
+    st.markdown(hide_table_row_index, unsafe_allow_html=True)
+    st.table(emp_data)
+    st.write("If there is no data, display will be empty")
+    chart1=alt.Chart(emp_data).mark_bar().encode(                             
+             alt.X('emp_id', title='Employ ID'),
+             alt.Y('total_sales', title='Sales in Rs')
+             )
+    st.altair_chart(chart1,use_container_width=True)
+            
+    chart2=alt.Chart(emp_data).mark_bar().encode(                             
+             alt.X('client_id', title='Client ID'),
+             alt.Y('total_sales', title='Sales in Rs')
+             )
+    st.altair_chart(chart2,use_container_width=True)       
